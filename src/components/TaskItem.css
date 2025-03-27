@@ -1,0 +1,25 @@
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  background: #f9f9f9;
+  margin: 5px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s; /* Smooth transition */
+}
+
+.task-item:hover {
+  transform: scale(1.02); /* Subtle hover effect */
+}
+
+.task-item.completed span {
+  text-decoration: line-through;
+  color: #aaa;
+  opacity: 0.5; /* Fade out effect */
+}
+
+.task-item span {
+  cursor: pointer;
+}

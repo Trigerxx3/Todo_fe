@@ -1,0 +1,160 @@
+/* App.css */
+
+:root {
+  --background-color: #f4f4f4; /* Light mode background */
+  --text-color: #333; /* Light mode text color */
+  --navbar-background: #007bff; /* Navbar background */
+  --footer-background: #f1f1f1; /* Footer background */
+  --task-background: #f9f9f9; /* Task item background */
+  --button-background: #28a745; /* Button background */
+  --button-hover-background: #218838; /* Button hover background */
+}
+
+.dark-mode {
+  --background-color: #333; /* Dark mode background */
+  --text-color: #f4f4f4; /* Dark mode text color */
+  --navbar-background: #444; /* Dark mode navbar background */
+  --footer-background: #555; /* Dark mode footer background */
+  --task-background: #444; /* Dark mode task item background */
+  --button-background: #1e7e34; /* Dark mode button background */
+  --button-hover-background: #1c7430; /* Dark mode button hover background */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
+  font-family: 'Poppins', sans-serif; /* Modern font */
+}
+
+h1 {
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 20px; /* Spacing below the title */
+}
+
+.todo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Center the container */
+  margin: 0 auto; /* Center the container on the page */
+}
+
+.task-input {
+  display: flex;
+  justify-content: center; /* Center the input field */
+  width: 100%; /* Full width for input and button */
+  margin-bottom: 20px; /* Spacing below the input */
+}
+
+.task-input input[type="text"] {
+  width: 80%; /* Set a fixed width for the input field */
+  margin-right: 10px; /* Space between input and button */
+}
+
+.task-input button {
+  width: 15%; /* Set a fixed width for the button */
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px; /* Increased padding for better spacing */
+  border-radius: 5px;
+  background: var(--task-background);
+  margin: 10px 0; /* Increased margin for better spacing */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+  transition: transform 0.2s, opacity 0.3s; /* Smooth transition */
+}
+
+.task-item.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards; /* Fade-in animation */
+}
+
+.task-item.slide-out {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.task-item:hover {
+  transform: scale(1.02); /* Tilt effect on hover */
+}
+
+.task-input input[type="text"]:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glowing effect on focus */
+}
+
+button {
+  padding: 10px 15px;
+  background-color: var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
+  position: relative; /* For ripple effect */
+  overflow: hidden; /* Hide overflow for ripple */
+}
+
+button:hover {
+  background-color: var(--button-hover-background); /* Change color on hover */
+  transform: scale(1.05); /* Bounce effect on hover */
+}
+
+button:focus::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Scrollbar hover color */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .todo-container {
+    width: 100%; /* Full width on mobile */
+  }
+
+  input[type="text"], button {
+    width: 100%; /* Full width for input and buttons */
+  }
+}
