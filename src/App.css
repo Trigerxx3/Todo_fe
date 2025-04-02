@@ -33,6 +33,18 @@ h1 {
   color: var(--text-color);
   text-align: center;
   margin-bottom: 20px; /* Spacing below the title */
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(45deg, #007bff, #00ff88);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 10px rgba(0, 123, 255, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(0, 123, 255, 0.8); }
 }
 
 .todo-container {
@@ -40,13 +52,21 @@ h1 {
   flex-direction: column;
   align-items: center; /* Center items horizontally */
   justify-content: center; /* Center items vertically */
-  background: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   width: 100%;
   max-width: 600px; /* Center the container */
   margin: 0 auto; /* Center the container on the page */
+}
+
+.todo-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .task-input {
@@ -59,22 +79,140 @@ h1 {
 .task-input input[type="text"] {
   width: 80%; /* Set a fixed width for the input field */
   margin-right: 10px; /* Space between input and button */
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
 .task-input button {
   width: 15%; /* Set a fixed width for the button */
 }
 
+.task-list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
 .task-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px; /* Increased padding for better spacing */
-  border-radius: 5px;
-  background: var(--task-background);
-  margin: 10px 0; /* Increased margin for better spacing */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
-  transition: transform 0.2s, opacity 0.3s; /* Smooth transition */
+  padding: 15px 20px;
+  margin: 15px 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 4px solid #007bff;
+  animation: slideIn 0.3s ease-out;
+  background: linear-gradient(to right, #ffffff, #f8f9fa);
+}
+
+.task-item:hover {
+  transform: translateX(5px);
+  border-left-color: #00ff88;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.task-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.task-main {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.task-text {
+  font-size: 1.1em;
+  color: #333;
+}
+
+.task-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+  color: #666;
+  background: rgba(0, 123, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.task-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-actions button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.task-actions button:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+.edit-btn {
+  background-color: #f0f0f0;
+}
+
+.delete-btn {
+  background-color: #ffe0e0;
+}
+
+.edit-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.delete-btn:hover {
+  background-color: #ffd0d0;
+}
+
+.completed .task-text {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.completed .task-date {
+  color: #999;
 }
 
 .task-item.fade-in {
@@ -93,45 +231,58 @@ h1 {
   }
 }
 
-.task-item:hover {
-  transform: scale(1.02); /* Tilt effect on hover */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .task-input input[type="text"]:focus {
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glowing effect on focus */
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 button {
-  padding: 10px 15px;
-  background-color: var(--button-background);
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #007bff, #0056b3);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
-  position: relative; /* For ripple effect */
-  overflow: hidden; /* Hide overflow for ripple */
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
-  background-color: var(--button-hover-background); /* Change color on hover */
-  transform: scale(1.05); /* Bounce effect on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
 }
 
-button:focus::after {
+button::after {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: scale(0);
-  animation: ripple 0.6s linear;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
 }
 
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+button:active::after {
+  width: 200px;
+  height: 200px;
+  opacity: 0;
 }
 
 /* Custom scrollbar styles */
@@ -149,12 +300,127 @@ button:focus::after {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .todo-container {
-    width: 100%; /* Full width on mobile */
+    padding: 15px;
+    margin: 10px;
   }
 
-  input[type="text"], button {
-    width: 100%; /* Full width for input and buttons */
+  h1 {
+    font-size: 2em;
   }
+
+  .task-item {
+    padding: 10px 15px;
+  }
+
+  input[type="text"], input[type="date"] {
+    padding: 8px 12px;
+  }
+}
+
+.task-input input[type="date"] {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+input[type="date"]:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Loading Animation */
+.loading {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Completed Task Animation */
+.task-item.completed {
+  animation: completeTask 0.5s ease-out;
+}
+
+@keyframes completeTask {
+  0% { background-color: #ffffff; }
+  50% { background-color: #e8fff0; }
+  100% { background-color: #f8f9fa; }
+}
+
+/* Dark Mode Transitions */
+.dark-mode .task-item {
+  background: linear-gradient(to right, #2c2c2c, #363636);
+  border-left-color: #1a75ff;
+}
+
+.dark-mode .task-item:hover {
+  border-left-color: #00cc6a;
+}
+
+/* Checkbox Animation */
+input[type="checkbox"] {
+  cursor: pointer;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+  transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+  animation: checkmark 0.3s ease-in-out;
+}
+
+@keyframes checkmark {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Completed Task Style */
+.completed {
+  opacity: 0.7;
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+}
+
+.completed .task-text {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-mode .todo-container {
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode input[type="text"],
+.dark-mode input[type="date"] {
+  background: #2c2c2c;
+  border-color: #444;
+  color: #fff;
 }

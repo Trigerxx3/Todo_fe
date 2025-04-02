@@ -2,25 +2,37 @@ import React, { useState } from 'react';
 import './TaskInput.css'; // Importing the CSS for TaskInput
 
 const TaskInput = ({ addTask }) => {
-  const [task, setTask] = useState('');
+  const [taskText, setTaskText] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
-  const handleAddTask = () => {
-    if (task) {
-      addTask(task);
-      setTask('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (taskText.trim()) {
+      addTask({
+        text: taskText,
+        dueDate: dueDate
+      });
+      setTaskText('');
+      setDueDate('');
     }
   };
 
   return (
-    <div className="task-input">
+    <form onSubmit={handleSubmit} className="task-input">
       <input
         type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Add a new task"
+        value={taskText}
+        onChange={(e) => setTaskText(e.target.value)}
+        placeholder="Add a new task..."
+        required
       />
-      <button onClick={handleAddTask}>Add Task</button>
-    </div>
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
+      <button type="submit">Add Task</button>
+    </form>
   );
 };
 

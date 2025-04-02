@@ -11,7 +11,7 @@ const TaskItem = ({ task, toggleTaskCompletion, removeTask, startEditing }) => {
 
   return (
     <li className={`task-item ${task.completed ? 'completed' : ''} ${!isVisible ? 'slide-out' : ''}`}>
-      <span onClick={toggleTaskCompletion}>{task.text}</span>
+      <span onClick={toggleTaskCompletion}>{task.data}</span>
       <div>
         <button onClick={() => startEditing(task)}>Edit</button>
         <button onClick={handleRemove}>Remove</button>
