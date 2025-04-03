@@ -11,8 +11,9 @@ const API_URL = "http://localhost:3000/api/items"; // Ensure correct API URL
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editingTaskIndex, setEditingTaskIndex] = useState(null);
-  const [showTasks, setShowTasks] = useState(false); // New state to control task visibility
+  const [showTasks, setShowTasks] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [error, setError] = useState(null);
 
   // Fetch tasks from backend
   const fetchTasks = async () => {
@@ -31,17 +32,24 @@ function App() {
     fetchTasks();
   }, []);
 
-  // Updated addTask function
+  // Add task function
   const addTask = async (taskData) => {
     try {
+      if (!taskData.text.trim()) {
+        throw new Error("Task title is required");
+      }
+
       const response = await axios.post(API_URL, {
-        data: taskData.text,      // Match the backend model field name
-        dueDate: taskData.dueDate // Optional due date
+        title: taskData.text.trim(),
+        dueDate: taskData.dueDate
       });
+
       console.log("✅ Task added:", response.data);
-      fetchTasks(); // Refresh the task list
+      fetchTasks(); // Refresh the list
+      setError(null);
     } catch (error) {
-      console.error("❌ Error adding task:", error.response?.data || error.message);
+      console.error("❌ Error adding task:", error);
+      setError(error.response?.data?.error || error.message);
     }
   };
 
@@ -72,21 +80,28 @@ function App() {
     setEditingTaskIndex(index);
   };
 
-  // Updated saveEditedTask function to handle date
+  // Update task function
   const saveEditedTask = async (editedData) => {
-    const taskToUpdate = tasks[editingTaskIndex];
-
     try {
-      const response = await axios.put(`${API_URL}/edit/${taskToUpdate._id}`, {
-        data: editedData.text,
-        dueDate: editedData.dueDate
+      if (!editedData.text.trim()) {
+        throw new Error("Task title is required");
+      }
+
+      const taskToUpdate = tasks[editingTaskIndex];
+      const response = await axios.put(`${API_URL}/${taskToUpdate._id}`, {
+        title: editedData.text.trim(),
+        dueDate: editedData.dueDate,
+        completed: taskToUpdate.completed
       });
+
       const updatedTasks = [...tasks];
       updatedTasks[editingTaskIndex] = response.data;
       setTasks(updatedTasks);
       setEditingTaskIndex(null);
+      setError(null);
     } catch (error) {
-      console.error("❌ Error editing task:", error);
+      console.error("❌ Error updating task:", error);
+      setError(error.response?.data?.error || error.message);
     }
   };
 
@@ -106,7 +121,10 @@ function App() {
     <>
       <Navbar toggleDarkMode={toggleDarkMode} />
       <h1>Advanced To-Do List</h1>
-      <button onClick={() => { fetchTasks(); setShowTasks(true); }}>🔄 List All Tasks</button>
+      {error && <div className="error-message">{error}</div>}
+      <button onClick={() => { fetchTasks(); setShowTasks(true); }}>
+        🔄 List All Tasks
+      </button>
       <div className="todo-container">
         <TaskInput addTask={addTask} />
         {showTasks && (
