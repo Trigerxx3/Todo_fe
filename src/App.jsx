@@ -31,17 +31,17 @@ function App() {
     fetchTasks();
   }, []);
 
-  // Updated addTask function to include date
+  // Updated addTask function
   const addTask = async (taskData) => {
     try {
       const response = await axios.post(API_URL, {
-        data: taskData.text,
-        dueDate: taskData.dueDate // Add due date to the request
+        data: taskData.text,      // Match the backend model field name
+        dueDate: taskData.dueDate // Optional due date
       });
       console.log("✅ Task added:", response.data);
-      fetchTasks(); // Refresh tasks after adding
+      fetchTasks(); // Refresh the task list
     } catch (error) {
-      console.error("❌ Error adding task:", error);
+      console.error("❌ Error adding task:", error.response?.data || error.message);
     }
   };
 
