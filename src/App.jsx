@@ -6,7 +6,7 @@ import TaskList from "./components/TaskList";
 import TaskEdit from "./components/TaskEdit";
 import Navbar from "./components/Navbar";
 
-const API_URL = "http://localhost:3000/api/items"; // Ensure correct API URL
+const API_URL = "http://localhost:3001/api/items"; // Changed port to 3001
 
 function App() {
   const [tasks, setTasks] = useState([]);

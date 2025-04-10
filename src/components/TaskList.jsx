@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TaskItem from './TaskItem';
 
@@ -28,13 +27,14 @@ function TaskList({ tasks, toggleTaskCompletion, removeTask, startEditing }) {
                   checked={task.completed}
                   onChange={() => toggleTaskCompletion(task._id)}
                 />
-                <div className="task-details">
-                  <span className="task-text">{task.data}</span>
-                  <span className="task-date">
-                    📅 Due: {formatDate(task.dueDate)}
-                  </span>
-                </div>
+                <span className="task-text">{task.title}</span>
               </div>
+              {task.dueDate && (
+                <div className="task-date">
+                  <span className="date-icon">📅</span>
+                  <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+                </div>
+              )}
             </div>
             <div className="task-actions">
               <button className="edit-btn" onClick={() => startEditing(task)}>
